@@ -1,3 +1,5 @@
+'use strict';
+
 // dependencies
 var express = require('express');
 var routes = require('./routes');
@@ -6,7 +8,7 @@ var http = require('http');
 var path = require('path');
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017');
+var db = monk('localhost:27017/portfolio');
 
 var app = express();
 
@@ -32,6 +34,8 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/about', routes.about);
 app.get('/userlist', routes.userlist(db));
+app.get('/newuser', routes.newuser);
+app.post('/adduser', routes.adduser(db));
 
 // start server
 http.createServer(app).listen(app.get('port'), function(){
