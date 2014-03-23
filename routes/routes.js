@@ -12,6 +12,10 @@ exports.about = function(req, res){
   res.render('about', { title: 'About' });
 };
 
+exports.blog = function(req, res){
+  res.render('blog', { title: 'Blog' });
+};
+
 exports.userlist = function(db) {
     return function(req, res) {
         var collection = db.get('usercollection');

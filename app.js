@@ -2,7 +2,7 @@
 
 // dependencies
 var express = require('express');
-var routes = require('./routes');
+var routes = require('./routes/routes');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
@@ -29,10 +29,11 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-// routes
+// render the views
 app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/about', routes.about);
+app.get('/blog', routes.blog);
 app.get('/userlist', routes.userlist(db));
 app.get('/newuser', routes.newuser);
 app.post('/adduser', routes.adduser(db));
