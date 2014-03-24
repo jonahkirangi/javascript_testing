@@ -6,7 +6,7 @@ var routes = require('./routes/routes');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
-var mongo = require('mongodb');
+//var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('localhost:27017/portfolio');
 
