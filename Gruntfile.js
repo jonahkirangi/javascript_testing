@@ -1,30 +1,84 @@
 'use strict';
-/*jslint node: true */
-
 module.exports = function(grunt) {
 
+  grunt.loadNpmTasks('grunt-simple-mocha');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-express-server');
+  grunt.loadNpmTasks('grunt-casper');
+
   grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
-    jshint: {
-      all: ['Gruntfile.js', './*.js', 'api/**/*.js', 'app/assets**/*.js'],
+    express: {
       options: {
-        jshintrc: true,
+        // Override defaults here
+      },
+      dev: {
+        options: {
+          script: 'server.js'
+        }
+      },
+      prod: {
+        options: {
+          script: 'server.js',
+          node_env: 'production'
+        }
+      },
+      test: {
+        options: {
+          script: 'server.js'
+        }
       }
     },
     simplemocha: {
-      options: {
-        timeout: 3000,
-        ignoreLeaks: false,
-        reporter: 'tap'
+      dev:{
+        src:['test/*_test.js','!test/acceptance/*_test.js'],
+        options:{
+          reporter: 'spec',
+          slow: 200,
+          timeout: 1000
+        }
+      }
+    },
+    watch: {
+      all: {
+        files:['server.js', '**/*.js' ],
+        tasks:['jshint']
       },
-
-      all: { src: ['test/**/*.js'] }
+      express: {
+        files:  [ 'server.js','models/**/*.js','routes/**/*.js' ],
+        tasks:  [ 'express:dev' ],
+        options: {
+          // for grunt-contrib-watch v0.5.0+, "nospawn: true" for lower versions.
+          // Without this option specified express won't be reloaded
+          spawn: false
+        }
+      }
+    },
+    casper: {
+      acceptance : {
+        options : {
+          test : true,
+        },
+        files : {
+          'test/acceptance/casper-results.xml' : ['test/acceptance/*_test.js']
+        }
+      }
+    },
+    jshint: {
+      all: ['Gruntfile.js', 'server.js', 'models/**/*.js', 'test/**/*.js'],
+      options: {
+        jshintrc: true,
+        globals: {
+          console: true,
+          module: true
+        }
+      }
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-simple-mocha');
+  grunt.registerTask('test', ['jshint', 'simplemocha:dev']);
+  grunt.registerTask('server', [ 'jshint', 'express:dev','watch:express' ]);
+  grunt.registerTask('test:acceptance',['express:dev','casper']);
+  grunt.registerTask('default', ['jshint', 'test','watch:express']);
 
-  grunt.registerTask('default', ['jshint']);
-  grunt.registerTask('test', ['jshint', 'simplemocha']);
 };
