@@ -138,6 +138,35 @@ module.exports = function(grunt) {
         },
         files: {'build/css/styles.css': 'assets/scss/styles.scss'}
       }
+    },
+    mongoimport: {
+      options: {
+        db : 'oaa',
+        //optional
+        //host : 'localhost',
+        //port: '27017',
+        //username : 'username',
+        //password : 'password',
+        //stopOnError : false,
+        collections : [
+          {
+            name : 'users',
+            type : 'json',
+            file : 'db/seeds/users.json',
+            jsonArray : true,  //optional
+            upsert : true,  //optional
+            drop : true  //optional
+          },
+          {
+            name : 'meetings',
+            type :'json',
+            file : 'db/seeds/meetings.json',
+            jsonArray : true,
+            upsert : true,
+            drop : true
+          }
+        ]
+      }
     }
   });
 
