@@ -176,5 +176,6 @@ module.exports = function(grunt) {
   grunt.registerTask('server', [ 'jshint', 'express:dev','watch:express' ]);
   grunt.registerTask('test:acceptance',['express:dev','casper']);
   grunt.registerTask('default', ['jshint', 'test','watch:express']);
+  grunt.registerTask('travis', ['jshint']);
 
 };

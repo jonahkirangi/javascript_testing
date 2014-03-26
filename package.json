@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "test": "mkdir -p build && grunt travis --trace --verbose"
+    "test": "grunt travis"
   },
   "dependencies": {
     "express": "*",
