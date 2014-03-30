@@ -7,7 +7,7 @@
     "test": "grunt travis"
   },
   "dependencies": {
-    "express": "*",
+    "express": "~3.5.1",
     "jade": "*",
     "mongodb": "*",
     "monk": "*"
